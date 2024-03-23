@@ -11,6 +11,14 @@ variable "CLOUDFLARE_ACCOUNT_ID" {
   type = string
 }
 
+variable "CLOUDFLARE_API_TOKEN" {
+  type = string
+}
+
+provider "cloudflare" {
+  api_token = var.CLOUDFLARE_API_TOKEN
+}
+
 resource "cloudflare_pages_project" "civilian-defense-drills" {
   account_id        = var.CLOUDFLARE_ACCOUNT_ID
   name              = "civilian-defense-drills"
