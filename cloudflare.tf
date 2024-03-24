@@ -16,7 +16,7 @@ variable "CLOUDFLARE_API_TOKEN" {
 }
 
 variable "PROJECT_NAME" {
-  type = string
+  type    = string
   default = "civilian-defense-drills"
 }
 
