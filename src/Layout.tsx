@@ -1,22 +1,33 @@
-import { Link, Outlet } from "react-router-dom";
+import { Box, Container, Separator } from "@radix-ui/themes";
+import { Outlet } from "react-router-dom";
+import Link from "./components/Link";
+
+const links = [
+  { text: "Home", to: "/" },
+  { text: "Drills", to: "/drills" },
+  { text: "Courses", to: "/courses" },
+];
 
 export default function Layout() {
   return (
-    <>
-      <header>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/courses">Courses</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <h1 className="text-3xl font-bold">Civilian Defense Drills</h1>
-      <Outlet />
-    </>
+    <Box>
+      <Container size="1">
+        <header>
+          <nav>
+            <ul className="flex justify-around">
+              {links.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to}>{link.text}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </header>
+        <Separator my="2" size="4" />
+        <Box>
+          <Outlet />
+        </Box>
+      </Container>
+    </Box>
   );
 }
