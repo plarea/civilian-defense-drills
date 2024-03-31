@@ -1,25 +1,78 @@
-import { useNavigate } from "react-router-dom";
-import { useQueryDrills } from "../service";
-import { Button, Container, Flex, Heading, Text } from "@radix-ui/themes";
+import { addDrill, createDrill, useQueryDrills, updateDrill } from "../service";
+import { Button, Flex, Heading, Separator, Text } from "@radix-ui/themes";
+import { useState } from "react";
+import DrillsForm from "./Form";
+import { DrillForm } from "../models";
+import Link from "../../components/Link";
 
 export default function DrillsList() {
   const drills = useQueryDrills();
-  const navigate = useNavigate();
+  const [editId, setEditId] = useState<string>();
   const handleCreateDrill = () => {
-    navigate("/drills/create");
+    setEditId("new");
   };
+  const handleCancel = () => {
+    setEditId(undefined);
+  };
+  const upsert = async (form: DrillForm, id?: string) => {
+    if (editId === "new") {
+      await addDrill(createDrill(form));
+      handleCancel();
+      return;
+    }
+
+    if (id) {
+      await updateDrill(id, { id, ...form });
+      handleCancel();
+      return;
+    }
+  };
+  const handleEdit = (id: string) => {
+    setEditId(id);
+  };
+
   return (
     <Flex gap="2" direction="column">
       <Heading>Drills</Heading>
-      <Flex gap="3" direction="column">
-        {!drills.length && <Text>No saved drills. Lets create one!</Text>}
-        {drills.map((drill) => (
-          <Container key={drill.id}>
-            <Text>{drill.name}</Text>
-          </Container>
-        ))}
-        <Button onClick={handleCreateDrill}>Create Drill</Button>
-      </Flex>
+      <section className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-3">
+          {!drills.length && <Text>No saved drills. Lets create one!</Text>}
+          {drills.map((drill) => (
+            <>
+              {editId === drill.id ? (
+                <DrillsForm
+                  key={drill.id}
+                  drill={drill}
+                  onSubmit={(form) => upsert(form, drill.id)}
+                  onCancel={handleCancel}
+                />
+              ) : (
+                <li
+                  className="flex justify-between flex-row gap-3"
+                  key={drill.id}
+                >
+                  <div>
+                    <Text>{drill.name}</Text>
+                  </div>
+                  <div className="flex gap-3">
+                    <Link to={`/drills/${drill.id}`}>View</Link>
+                    <Button onClick={() => handleEdit(drill.id)} size="1">
+                      Edit
+                    </Button>
+                  </div>
+                </li>
+              )}
+            </>
+          ))}
+        </ul>
+        {!editId && <Button onClick={handleCreateDrill}>Create Drill</Button>}
+        {editId === "new" && (
+          <>
+            <Separator size="4" />
+            <DrillsForm onSubmit={upsert} onCancel={handleCancel} />
+          </>
+        )}
+      </section>
     </Flex>
   );
 }

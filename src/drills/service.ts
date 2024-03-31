@@ -17,3 +17,7 @@ export function createDrill(form: DrillForm): Drill {
 export async function addDrill(drill: Drill): Promise<void> {
   await db.drills.add(drill);
 }
+
+export async function updateDrill(id: string, drill: Drill): Promise<void> {
+  await db.drills.update(id, drill);
+}

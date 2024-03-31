@@ -1,11 +1,16 @@
 import { FormEvent, useState } from "react";
-import { addDrill, createDrill } from "../service";
-import { useNavigate } from "react-router-dom";
-import { TextField, Text, Flex, Button, Heading } from "@radix-ui/themes";
+import { createDrill } from "../service";
+import { TextField, Text, Flex, Button } from "@radix-ui/themes";
+import Drill, { DrillForm } from "../models";
 
-export default function DrillsForm() {
-  const [name, setName] = useState("");
-  const navigate = useNavigate();
+type Props = {
+  onSubmit: (form: DrillForm) => void;
+  onCancel: () => void;
+  drill?: Drill;
+};
+
+export default function DrillsForm(props: Props) {
+  const [name, setName] = useState(props.drill?.name ?? "");
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name.length <= 0) {
@@ -14,12 +19,10 @@ export default function DrillsForm() {
     }
     const drill = createDrill({ name });
     setName("");
-    await addDrill(drill);
-    navigate("/drills");
+    props.onSubmit(drill);
   };
   return (
     <form onSubmit={handleSubmit} className="flex flex-col">
-      <Heading>Create Drill</Heading>
       <Flex gap="3" direction="column">
         <Text as="label">Drill name:</Text>
         <TextField.Root
@@ -30,9 +33,14 @@ export default function DrillsForm() {
           placeholder="50 round carbine"
           onChange={(e) => setName(e.target.value)}
         />
-        <Button variant="outline" type="submit">
-          Create
-        </Button>
+        <div className="flex gap-3 ml-auto">
+          <Button onClick={props.onCancel} variant="soft">
+            Cancel
+          </Button>
+          <Button variant="outline" type="submit">
+            {props.drill ? "Update" : "Create"}
+          </Button>
+        </div>
       </Flex>
     </form>
   );
