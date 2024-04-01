@@ -21,3 +21,7 @@ export async function addDrill(drill: Drill): Promise<void> {
 export async function updateDrill(id: string, drill: Drill): Promise<void> {
   await db.drills.update(id, drill);
 }
+
+export function useFindDrill(id: string): Drill | undefined {
+  return useLiveQuery(() => db.drills.get(id));
+}
