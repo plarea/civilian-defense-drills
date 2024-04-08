@@ -23,9 +23,9 @@ export default function DrillsList() {
   };
 
   return (
-    <Flex gap="2" direction="column">
+    <div className="flex flex-col gap-2 flex-auto">
       <Heading>Drills</Heading>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 flex-auto">
         <ul className="flex flex-col gap-3">
           {!drills.length && <Text>No saved drills. Lets create one!</Text>}
           {drills.map((drill) => (
@@ -52,14 +52,18 @@ export default function DrillsList() {
             </li>
           ))}
         </ul>
-        {!editId && <Button onClick={handleCreateDrill}>Create Drill</Button>}
         {editId === "new" && (
           <>
             <Separator size="4" />
             <DrillsForm onSubmit={upsert} onCancel={handleCancel} />
           </>
         )}
+        {!editId && (
+          <Button onClick={handleCreateDrill} className="mt-auto">
+            Create Drill
+          </Button>
+        )}
       </section>
-    </Flex>
+    </div>
   );
 }
