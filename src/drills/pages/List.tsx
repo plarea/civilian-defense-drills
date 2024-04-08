@@ -1,8 +1,8 @@
-import { addDrill, createDrill, useQueryDrills, updateDrill } from "../service";
+import { upsertDrill, useQueryDrills } from "../service";
 import { Button, Flex, Heading, Separator, Text } from "@radix-ui/themes";
 import { useState } from "react";
-import DrillsForm from "./Form";
-import { DrillForm } from "../models";
+import DrillsForm from "../components/Form";
+import Drill, { DrillForm } from "../models";
 import Link from "../../components/Link";
 
 export default function DrillsList() {
@@ -14,18 +14,9 @@ export default function DrillsList() {
   const handleCancel = () => {
     setEditId(undefined);
   };
-  const upsert = async (form: DrillForm, id?: string) => {
-    if (editId === "new") {
-      await addDrill(createDrill(form));
-      handleCancel();
-      return;
-    }
-
-    if (id) {
-      await updateDrill(id, { id, ...form });
-      handleCancel();
-      return;
-    }
+  const upsert = async (form: DrillForm | Drill) => {
+    await upsertDrill(form);
+    handleCancel();
   };
   const handleEdit = (id: string) => {
     setEditId(id);
@@ -42,7 +33,7 @@ export default function DrillsList() {
               {editId === drill.id ? (
                 <DrillsForm
                   drill={drill}
-                  onSubmit={(form) => upsert(form, drill.id)}
+                  onSubmit={upsert}
                   onCancel={handleCancel}
                 />
               ) : (

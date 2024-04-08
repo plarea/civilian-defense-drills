@@ -1,10 +1,9 @@
 import { FormEvent, useState } from "react";
-import { createDrill } from "../service";
 import { TextField, Text, Flex, Button } from "@radix-ui/themes";
 import Drill, { DrillForm } from "../models";
 
 type Props = {
-  onSubmit: (form: DrillForm) => void;
+  onSubmit: (form: DrillForm | Drill) => void;
   onCancel: () => void;
   drill?: Drill;
 };
@@ -17,7 +16,7 @@ export default function DrillsForm(props: Props) {
       // TODO show error
       return;
     }
-    const drill = createDrill({ name });
+    const drill = { ...props.drill, name };
     setName("");
     props.onSubmit(drill);
   };

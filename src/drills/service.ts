@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import Drill, { DrillForm } from "./models";
+import Drill, { DrillForm, isDrill } from "./models";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
 
@@ -14,12 +14,14 @@ export function createDrill(form: DrillForm): Drill {
   };
 }
 
-export async function addDrill(drill: Drill): Promise<void> {
-  await db.drills.add(drill);
-}
+export async function upsertDrill(drill: Drill | DrillForm): Promise<void> {
+  if (isDrill(drill)) {
+    await db.drills.update(drill.id, drill);
+    return;
+  }
 
-export async function updateDrill(id: string, drill: Drill): Promise<void> {
-  await db.drills.update(id, drill);
+  await db.drills.add(createDrill(drill));
+  return;
 }
 
 export function useFindDrill(id: string): Drill | undefined {
