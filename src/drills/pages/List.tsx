@@ -38,19 +38,15 @@ export default function DrillsList() {
         <ul className="flex flex-col gap-3">
           {!drills.length && <Text>No saved drills. Lets create one!</Text>}
           {drills.map((drill) => (
-            <>
+            <li className="flex justify-between flex-row gap-3" key={drill.id}>
               {editId === drill.id ? (
                 <DrillsForm
-                  key={drill.id}
                   drill={drill}
                   onSubmit={(form) => upsert(form, drill.id)}
                   onCancel={handleCancel}
                 />
               ) : (
-                <li
-                  className="flex justify-between flex-row gap-3"
-                  key={drill.id}
-                >
+                <>
                   <div>
                     <Text>{drill.name}</Text>
                   </div>
@@ -60,9 +56,9 @@ export default function DrillsList() {
                       Edit
                     </Button>
                   </div>
-                </li>
+                </>
               )}
-            </>
+            </li>
           ))}
         </ul>
         {!editId && <Button onClick={handleCreateDrill}>Create Drill</Button>}
