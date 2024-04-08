@@ -9,7 +9,7 @@ const links = [{ text: "Drills", to: "/drills" }];
 export default function Layout() {
   return (
     <main className="min-h-dvh flex flex-col p-2">
-      <div className="flex-auto flex">
+      <div className="flex-auto flex flex-col">
         <Outlet />
       </div>
       <header className="flex-initial">

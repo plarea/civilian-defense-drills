@@ -19,7 +19,7 @@ export default function DrillDetails({ drill }: Props) {
   };
   const [isCreatingCourse, setIsCreatingCourse] = useState(false);
   return (
-    <section className="flex flex-col gap-3">
+    <section className="flex flex-col gap-3 flex-auto">
       <Link to="/drills">Back</Link>
       <Heading>{drill.name}</Heading>
       {courses.length > 0 && <ListCourses courses={courses} />}
@@ -31,7 +31,7 @@ export default function DrillDetails({ drill }: Props) {
         />
       ) : (
         <IconButton
-          className="w-full"
+          className="w-full mt-auto"
           onClick={() => setIsCreatingCourse(true)}
           color="orange"
           variant="soft"
