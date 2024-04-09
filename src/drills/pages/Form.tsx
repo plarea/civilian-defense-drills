@@ -6,7 +6,7 @@ import Drill, { DrillForm } from "../models";
 export default function FormPage() {
   const { id } = useParams();
   const { state } = useLocation();
-  const origin = (state.origin as string) ?? "list";
+  const origin = (state ?? { origin: "list" }).origin as string;
   const navigate = useNavigate();
   const drill = useFindDrill(id);
   const handleCancel = () => {
