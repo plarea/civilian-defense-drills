@@ -1,10 +1,8 @@
 import { Separator } from "@radix-ui/themes";
 import { Outlet } from "react-router-dom";
-// import { ChevronLeftIcon } from "@radix-ui/react-icons";
+import { CounterClockwiseClockIcon, TargetIcon } from "@radix-ui/react-icons";
 // import { Link as RadixLink } from "@radix-ui/themes";
 import Link from "./components/Link";
-
-const links = [{ text: "Drills", to: "/drills" }];
 
 export default function Layout() {
   return (
@@ -24,11 +22,18 @@ export default function Layout() {
               //   </RadixLink>
               // </li>
             }
-            {links.map((link) => (
-              <li key={link.to}>
-                <Link to={link.to}>{link.text}</Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/drills" className="flex gap-1 items-center">
+                <TargetIcon />
+                Drills
+              </Link>
+            </li>
+            <li>
+              <Link to="/history" className="flex gap-1 items-center">
+                <CounterClockwiseClockIcon />
+                History
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="h-4" />
