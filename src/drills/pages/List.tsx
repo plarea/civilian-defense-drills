@@ -1,25 +1,16 @@
-import { upsertDrill, useQueryDrills } from "../service";
-import { Button, Heading, Separator, Text } from "@radix-ui/themes";
-import { useState } from "react";
-import DrillsForm from "../components/Form";
-import Drill, { DrillForm } from "../models";
+import { useQueryDrills } from "../service";
+import { Button, Heading, Text } from "@radix-ui/themes";
 import DrillCard from "../components/DrillCard";
+import { useNavigate } from "react-router-dom";
 
 export default function DrillsList() {
   const drills = useQueryDrills();
-  const [editId, setEditId] = useState<string>();
+  const navigate = useNavigate();
   const handleCreateDrill = () => {
-    setEditId("new");
+    navigate("/drills/new");
   };
-  const handleCancel = () => {
-    setEditId(undefined);
-  };
-  const upsert = async (form: DrillForm | Drill) => {
-    await upsertDrill(form);
-    handleCancel();
-  };
-  const handleEdit = (id: string) => {
-    setEditId(id);
+  const handleEdit = (drillId: string) => {
+    navigate(`/drills/${drillId}/edit`, { state: { origin: "list" } });
   };
 
   return (
@@ -30,32 +21,16 @@ export default function DrillsList() {
           {!drills.length && <Text>No saved drills. Lets create one!</Text>}
           {drills.map((drill) => (
             <li className="flex justify-between flex-row gap-3" key={drill.id}>
-              {editId === drill.id ? (
-                <DrillsForm
-                  drill={drill}
-                  onSubmit={upsert}
-                  onCancel={handleCancel}
-                />
-              ) : (
-                <DrillCard
-                  drill={drill}
-                  onEditClick={() => handleEdit(drill.id)}
-                />
-              )}
+              <DrillCard
+                drill={drill}
+                onEditClick={() => handleEdit(drill.id)}
+              />
             </li>
           ))}
         </ul>
-        {editId === "new" && (
-          <>
-            <Separator size="4" />
-            <DrillsForm onSubmit={upsert} onCancel={handleCancel} />
-          </>
-        )}
-        {!editId && (
-          <Button onClick={handleCreateDrill} className="mt-auto">
-            Create Drill
-          </Button>
-        )}
+        <Button onClick={handleCreateDrill} className="mt-auto">
+          Create Drill
+        </Button>
       </section>
     </div>
   );

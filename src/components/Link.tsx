@@ -17,6 +17,8 @@ type Props = {
   relative?: RelativeRoutingType;
   unstable_viewTransition?: boolean;
   to: To;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  state?: any;
 } & RadixLinkProps;
 
 export default function Link({
@@ -24,12 +26,14 @@ export default function Link({
   replace = false,
   target,
   to,
+  state,
   ...rest
 }: Props) {
   const href = useHref(to);
   const handleClick = useLinkClickHandler(to, {
     replace,
     target,
+    state,
   });
 
   return (

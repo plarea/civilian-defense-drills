@@ -12,6 +12,10 @@ export class MySubClassedDexie extends Dexie {
       drills: 'id, name',
       courses: `id, drillId, name, description`
     });
+    this.version(4).stores({
+      drills: `id, name, description`,
+      courses: `id, drillId, name, description`
+    })
   }
 }
 

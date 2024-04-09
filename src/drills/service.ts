@@ -11,6 +11,7 @@ export function createDrill(form: DrillForm): Drill {
   return {
     id: uuid(),
     name: form.name,
+    description: form.description,
   };
 }
 
@@ -24,6 +25,6 @@ export async function upsertDrill(drill: Drill | DrillForm): Promise<void> {
   return;
 }
 
-export function useFindDrill(id: string): Drill | undefined {
-  return useLiveQuery(() => db.drills.get(id));
+export function useFindDrill(id: string | undefined): Drill | undefined {
+  return useLiveQuery(() => (id ? db.drills.get(id) : undefined));
 }

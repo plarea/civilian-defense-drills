@@ -1,7 +1,7 @@
-import { Card, DropdownMenu } from "@radix-ui/themes";
+import { Button, Card, DropdownMenu } from "@radix-ui/themes";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import Drill from "../models";
-import Link from "../../components/Link";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   drill: Drill;
@@ -9,10 +9,14 @@ type Props = {
 };
 
 export default function DrillCard({ drill, onEditClick }: Props) {
+  const navigate = useNavigate();
+  const handleView = () => {
+    navigate(`/drills/${drill.id}`);
+  };
   return (
     <Card variant="surface" className="flex gap-1 flex-col w-full">
       <div className="flex justify-between">
-        <div className="font-bold">{drill.name}</div>
+        <span className="font-bold">{drill.name}</span>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <button className="text-accent">
@@ -24,12 +28,10 @@ export default function DrillCard({ drill, onEditClick }: Props) {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div>Start building your next project in minutes</div>
-      <div className="flex flex-col gap-1">
-        <Link className="flex-auto mx-auto" to={`/drills/${drill.id}`}>
-          View
-        </Link>
-      </div>
+      <span className="line-clamp-4">{drill.description}</span>
+      <Button variant="surface" onClick={handleView}>
+        View
+      </Button>
     </Card>
   );
 }
