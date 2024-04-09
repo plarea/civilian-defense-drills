@@ -3,7 +3,7 @@ import { Button, Heading, Separator, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import DrillsForm from "../components/Form";
 import Drill, { DrillForm } from "../models";
-import Link from "../../components/Link";
+import DrillCard from "../components/DrillCard";
 
 export default function DrillsList() {
   const drills = useQueryDrills();
@@ -37,17 +37,10 @@ export default function DrillsList() {
                   onCancel={handleCancel}
                 />
               ) : (
-                <>
-                  <div>
-                    <Text>{drill.name}</Text>
-                  </div>
-                  <div className="flex gap-3">
-                    <Link to={`/drills/${drill.id}`}>View</Link>
-                    <Button onClick={() => handleEdit(drill.id)} size="1">
-                      Edit
-                    </Button>
-                  </div>
-                </>
+                <DrillCard
+                  drill={drill}
+                  onEditClick={() => handleEdit(drill.id)}
+                />
               )}
             </li>
           ))}
