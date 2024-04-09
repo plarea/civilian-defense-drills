@@ -1,21 +1,17 @@
 import Dexie, { Table } from 'dexie';
 import Drill from './drills/models';
-import Course from './courses/models';
+import FireString from './fire-strings/models';
 
 export class MySubClassedDexie extends Dexie {
   drills!: Table<Drill>;
-  courses!: Table<Course>;
+  fireStrings!: Table<FireString>;
 
   constructor() {
     super('myDatabase');
-    this.version(3).stores({
+    this.version(5).stores({
       drills: 'id, name',
-      courses: `id, drillId, name, description`
+      fireStrings: `id, drillId, name, description`
     });
-    this.version(4).stores({
-      drills: `id, name, description`,
-      courses: `id, drillId, name, description`
-    })
   }
 }
 

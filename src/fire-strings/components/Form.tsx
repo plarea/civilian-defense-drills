@@ -1,27 +1,27 @@
 import { FormEvent, useState } from "react";
 import { TextField, Text, Button, TextArea } from "@radix-ui/themes";
-import Course, { CourseForm } from "../models";
+import FireString, { FireStringForm } from "../models";
 import Drill from "../../drills/models";
 
 type UpdateProps = {
   drill?: undefined;
-  course: Course;
+  fireString: FireString;
 };
 
 type CreateProps = {
   drill: Drill;
-  course?: undefined;
+  fireString?: undefined;
 };
 
 type Props = {
-  onSubmit: (form: Course | CourseForm) => void;
+  onSubmit: (form: FireString | FireStringForm) => void;
   onCancel: () => void;
 } & (UpdateProps | CreateProps);
 
 export default function Form(props: Props) {
-  const [name, setName] = useState(props.course?.name ?? "");
+  const [name, setName] = useState(props.fireString?.name ?? "");
   const [description, setDescription] = useState(
-    props.course?.description ?? "",
+    props.fireString?.description ?? "",
   );
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,27 +29,27 @@ export default function Form(props: Props) {
       // TODO show error
       return;
     }
-    const drillId = props.course ? props.course.drillId : props.drill.id;
-    const course = { ...(props.course || {}), name, drillId, description };
+    const drillId = props.fireString ? props.fireString.drillId : props.drill.id;
+    const fireString = { ...(props.fireString || {}), name, drillId, description };
     setName("");
     setDescription("");
-    props.onSubmit(course);
+    props.onSubmit(fireString);
   };
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <Text as="label">Course name:</Text>
+      <Text as="label">String name:</Text>
       <TextField.Root
         type="text"
-        id="course-name"
-        name="course-name"
+        id="string-name"
+        name="string-name"
         value={name}
         placeholder="1st COF"
         onChange={(e) => setName(e.target.value)}
       />
-      <Text as="label">Course description:</Text>
+      <Text as="label">String description:</Text>
       <TextArea
-        id="course-description"
-        name="course-description"
+        id="string-description"
+        name="string-description"
         value={description}
         placeholder="2 shots center target, headbox"
         onChange={(e) => setDescription(e.target.value)}
@@ -59,7 +59,7 @@ export default function Form(props: Props) {
           Cancel
         </Button>
         <Button variant="outline" type="submit">
-          {props.course ? "Update" : "Create"}
+          {props.fireString ? "Update" : "Create"}
         </Button>
       </div>
     </form>

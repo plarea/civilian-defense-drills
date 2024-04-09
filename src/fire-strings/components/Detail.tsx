@@ -1,21 +1,21 @@
 import { Button, Text } from "@radix-ui/themes";
-import Course from "../models";
+import FireString from "../models";
 
 type Props = {
-  course: Course;
+  fireString: FireString;
   onEditClick: () => void;
   isEditable?: boolean;
 };
 
-export default function CourseDetail({
-  course,
+export default function FireStringDetail({
+  fireString,
   onEditClick,
   isEditable = true,
 }: Props) {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between">
-        <Text weight="medium">{course.name}</Text>
+        <Text weight="medium">{fireString.name}</Text>
         {isEditable && (
           <Button onClick={onEditClick} size="1">
             Edit
@@ -23,7 +23,7 @@ export default function CourseDetail({
         )}
       </div>
       <Text weight="light" size="1">
-        {course.description}
+        {fireString.description}
       </Text>
     </div>
   );

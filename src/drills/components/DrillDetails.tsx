@@ -1,18 +1,18 @@
 import { Heading, IconButton } from "@radix-ui/themes";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import Drill from "../models";
-import ListCourses from "../../courses/components/List";
-import { upsertCourse, useQueryCourses } from "../../courses/service";
-import Form from "../../courses/components/Form";
+import FireStringList from "../../fire-strings/components/List";
+import { upsertFireString, useQueryFireStrings } from "../../fire-strings/service";
+import Form from "../../fire-strings/components/Form";
 import { useState } from "react";
-import Course, { CourseForm } from "../../courses/models";
+import FireString, { FireStringForm } from "../../fire-strings/models";
 import Link from "../../components/Link";
 
 type Props = {
   drill: Drill;
 };
 export default function DrillDetails({ drill }: Props) {
-  const courses = useQueryCourses(drill.id);
+  const fireStrings = useQueryFireStrings(drill.id);
   const [editId, setEditId] = useState<string>();
   const handleEditClick = (id: string) => {
     setEditId(id);
@@ -20,8 +20,8 @@ export default function DrillDetails({ drill }: Props) {
   const handleCancel = () => {
     setEditId(undefined);
   };
-  const handleSubmit = async (course: Course | CourseForm) => {
-    await upsertCourse(course);
+  const handleSubmit = async (fireString: FireString | FireStringForm) => {
+    await upsertFireString(fireString);
     setEditId(undefined);
   };
   return (
@@ -35,11 +35,11 @@ export default function DrillDetails({ drill }: Props) {
       <Heading>{drill.name}</Heading>
       <span>{drill.description}</span>
       <Heading as="h2" size="4">
-        Course of Fires:
+        Strings of Fire:
       </Heading>
-      {courses.length > 0 && (
-        <ListCourses
-          courses={courses}
+      {fireStrings.length > 0 && (
+        <FireStringList
+          fireStrings={fireStrings}
           editId={editId}
           onCancel={handleCancel}
           onUpdate={handleSubmit}
@@ -61,7 +61,7 @@ export default function DrillDetails({ drill }: Props) {
           variant="soft"
         >
           <PlusCircledIcon width="18" height="18" />
-          &nbsp;Add Course of Fire
+          &nbsp;Add String of Fire
         </IconButton>
       )}
     </section>
