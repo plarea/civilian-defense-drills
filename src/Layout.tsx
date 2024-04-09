@@ -7,6 +7,9 @@ import Link from "./components/Link";
 export default function Layout() {
   return (
     <main className="min-h-dvh flex flex-col p-2">
+      <Link to="/" className="text-center m-1">
+        Civilian Defense Drills
+      </Link>
       <div className="flex-auto flex flex-col">
         <Outlet />
       </div>
