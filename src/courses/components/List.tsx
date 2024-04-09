@@ -1,40 +1,33 @@
-import { useState } from "react";
 import Course, { CourseForm } from "../models";
 import CourseDetail from "./Detail";
 import Form from "./Form";
-import { upsertCourse } from "../service";
 
 type Props = {
   courses: Course[];
+  editId?: string;
+  onCancel: () => void;
+  onEditClick: (id: string) => void;
+  onUpdate: (course: Course | CourseForm) => void;
 };
 
-export default function ListCourses({ courses }: Props) {
-  const [editId, setEditId] = useState<string>();
-  const handleEditClick = (id: string) => {
-    setEditId(id);
-  };
-  const handleCancel = () => {
-    setEditId(undefined);
-  };
-  const handleUpdateCourse = async (course: Course | CourseForm) => {
-    await upsertCourse(course);
-    setEditId(undefined);
-  };
+export default function ListCourses({
+  courses,
+  editId,
+  onUpdate,
+  onCancel,
+  onEditClick,
+}: Props) {
   return (
     <ul className="flex flex-col gap-3">
       {courses.map((course) => (
         <li key={course.id}>
           {editId === course.id ? (
-            <Form
-              course={course}
-              onSubmit={handleUpdateCourse}
-              onCancel={handleCancel}
-            />
+            <Form course={course} onSubmit={onUpdate} onCancel={onCancel} />
           ) : (
             <CourseDetail
               isEditable={!editId}
               course={course}
-              onEditClick={() => handleEditClick(course.id)}
+              onEditClick={() => onEditClick(course.id)}
             />
           )}
         </li>

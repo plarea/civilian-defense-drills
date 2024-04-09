@@ -13,11 +13,17 @@ type Props = {
 };
 export default function DrillDetails({ drill }: Props) {
   const courses = useQueryCourses(drill.id);
+  const [editId, setEditId] = useState<string>();
+  const handleEditClick = (id: string) => {
+    setEditId(id);
+  };
+  const handleCancel = () => {
+    setEditId(undefined);
+  };
   const handleSubmit = async (course: Course | CourseForm) => {
     await upsertCourse(course);
-    setIsCreatingCourse(false);
+    setEditId(undefined);
   };
-  const [isCreatingCourse, setIsCreatingCourse] = useState(false);
   return (
     <section className="flex flex-col gap-3 flex-auto">
       <div className="flex justify-between">
@@ -28,18 +34,29 @@ export default function DrillDetails({ drill }: Props) {
       </div>
       <Heading>{drill.name}</Heading>
       <span>{drill.description}</span>
-      <Heading as="h2" size="4">Course of Fires:</Heading>
-      {courses.length > 0 && <ListCourses courses={courses} />}
-      {isCreatingCourse ? (
+      <Heading as="h2" size="4">
+        Course of Fires:
+      </Heading>
+      {courses.length > 0 && (
+        <ListCourses
+          courses={courses}
+          editId={editId}
+          onCancel={handleCancel}
+          onUpdate={handleSubmit}
+          onEditClick={handleEditClick}
+        />
+      )}
+      {editId === "new" && (
         <Form
           drill={drill}
-          onCancel={() => setIsCreatingCourse(false)}
+          onCancel={() => setEditId(undefined)}
           onSubmit={handleSubmit}
         />
-      ) : (
+      )}
+      {!editId && (
         <IconButton
           className="w-full mt-auto"
-          onClick={() => setIsCreatingCourse(true)}
+          onClick={() => setEditId("new")}
           color="orange"
           variant="soft"
         >
