@@ -16,14 +16,14 @@ export default function Layout() {
         <Separator my="2" size="4" />
         <nav>
           <ul className="flex justify-around">
-          {
-          // <li className="flex">
-          //   <RadixLink className="flex items-center" onClick={() => {}}>
-          //     <ChevronLeftIcon />
-          //     Back
-          //   </RadixLink>
-          // </li>
-          }
+            {
+              // <li className="flex">
+              //   <RadixLink className="flex items-center" onClick={() => {}}>
+              //     <ChevronLeftIcon />
+              //     Back
+              //   </RadixLink>
+              // </li>
+            }
             {links.map((link) => (
               <li key={link.to}>
                 <Link to={link.to}>{link.text}</Link>
@@ -31,6 +31,7 @@ export default function Layout() {
             ))}
           </ul>
         </nav>
+        <div className="h-4" />
       </header>
     </main>
   );
