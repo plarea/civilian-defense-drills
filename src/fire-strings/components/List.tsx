@@ -5,9 +5,11 @@ import Form from "./Form";
 type Props = {
   fireStrings: FireString[];
   editId?: string;
-  onEditClick: (id: string) => void;
+  onClick: (id: string) => void;
   onDone: () => void;
   onChange: (fireString: FireString | FireStringForm) => void;
+  selectedIds?: string[];
+  mode: "view" | "select";
 };
 
 export default function FireStringList({
@@ -15,7 +17,9 @@ export default function FireStringList({
   editId,
   onChange,
   onDone,
-  onEditClick,
+  onClick,
+  mode,
+  selectedIds = [],
 }: Props) {
   return (
     <ul className="flex flex-col gap-3">
@@ -25,8 +29,10 @@ export default function FireStringList({
             <Form onDone={onDone} fireString={fireString} onChange={onChange} />
           ) : (
             <FireStringDetail
+              mode={mode}
               fireString={fireString}
-              onEditClick={() => onEditClick(fireString.id)}
+              onClick={() => onClick(fireString.id)}
+              isSelected={selectedIds.includes(fireString.id)}
             />
           )}
         </li>

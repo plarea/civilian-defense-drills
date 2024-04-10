@@ -32,3 +32,7 @@ export async function upsertFireString(
   await db.fireStrings.add(createFireString(fireString));
   return;
 }
+
+export async function deleteFireStrings(fireStringIds: string[]): Promise<void> {
+  await db.fireStrings.bulkDelete(fireStringIds);
+}

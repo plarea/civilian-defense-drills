@@ -1,16 +1,24 @@
-import { Card } from "@radix-ui/themes";
+import { Card, Checkbox } from "@radix-ui/themes";
 import FireString from "../models";
 
 type Props = {
   fireString: FireString;
-  onEditClick: () => void;
+  onClick: () => void;
+  isSelected?: boolean;
+  mode: "view" | "select";
 };
 
-export default function FireStringDetail({ fireString, onEditClick }: Props) {
+export default function FireStringDetail({
+  fireString,
+  onClick,
+  mode,
+  isSelected = false,
+}: Props) {
   return (
-    <Card variant="surface" className="flex gap-2 w-full" onClick={onEditClick}>
+    <Card variant="surface" className="flex gap-2 w-full" onClick={onClick}>
       <span className="flex-initial font-extrabold text-2xl items-center flex mx-2">
-        {fireString.order}
+        {mode === "select" && <Checkbox size="3" checked={isSelected} />}
+        {mode === "view" && fireString.order}
       </span>
       <div className="flex-auto flex flex-col gap-1">
         <span className="text-sm">{fireString.description}</span>

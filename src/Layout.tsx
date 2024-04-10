@@ -10,7 +10,7 @@ export default function Layout() {
       <Link to="/" className="text-center m-1">
         Civilian Defense Drills
       </Link>
-      <div className="flex-auto flex flex-col overflow-y-auto">
+      <div className="flex-1 basis-0 flex flex-col overflow-y-auto">
         <Outlet />
       </div>
       <header className="flex-initial">
