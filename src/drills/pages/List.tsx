@@ -9,9 +9,6 @@ export default function DrillsList() {
   const handleCreateDrill = () => {
     navigate("/drills/new");
   };
-  const handleEdit = (drillId: string) => {
-    navigate(`/drills/${drillId}/edit`, { state: { origin: "list" } });
-  };
 
   return (
     <div className="flex flex-col gap-2 flex-auto">
@@ -21,10 +18,7 @@ export default function DrillsList() {
           {!drills.length && <Text>No saved drills. Lets create one!</Text>}
           {drills.map((drill) => (
             <li className="flex justify-between flex-row gap-3" key={drill.id}>
-              <DrillCard
-                drill={drill}
-                onEditClick={() => handleEdit(drill.id)}
-              />
+              <DrillCard drill={drill} />
             </li>
           ))}
         </ul>

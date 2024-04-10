@@ -61,7 +61,6 @@ export default function Form({
   };
   const fireStringForm = useMemo(() => {
     if (description.length <= 0) {
-      // TODO show error
       return;
     }
     const drillId = fireString ? fireString.drillId : drill.id;

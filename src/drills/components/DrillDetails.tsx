@@ -7,10 +7,12 @@ import {
   upsertFireString,
   useQueryFireStrings,
 } from "../../fire-strings/service";
-import Form from "../../fire-strings/components/Form";
+import DrillForm from "./Form";
+import StringForm from "../../fire-strings/components/Form";
 import { useState } from "react";
 import FireString, { FireStringForm } from "../../fire-strings/models";
 import Link from "../../components/Link";
+import { upsertDrill } from "../service";
 
 type Props = {
   drill: Drill;
@@ -41,17 +43,20 @@ export default function DrillDetails({ drill }: Props) {
   const handleChange = async (fireString: FireString | FireStringForm) => {
     await upsertFireString(fireString);
   };
-  const handleCancel = () => {
+  const handleUpdate = async (drill: Drill) => {
+    await upsertDrill(drill);
+  };
+  const handleDone = () => {
     setMode("regular");
     setDeleteIds([]);
   };
   const handleDelete = () => {
     if (!deleteIds.length) {
-      handleCancel();
+      handleDone();
       return;
     }
     deleteFireStrings(deleteIds);
-    handleCancel();
+    handleDone();
   };
   return (
     <section className="flex flex-col gap-3 flex-auto h-full">
@@ -66,14 +71,15 @@ export default function DrillDetails({ drill }: Props) {
           {mode === "edit" && (
             <>
               <RadixLink onClick={handleDelete}>Delete</RadixLink>
-              <RadixLink onClick={handleCancel}>Cancel</RadixLink>
+              <RadixLink onClick={handleDone}>Done</RadixLink>
             </>
           )}
         </div>
         <Heading>{drill.name}</Heading>
       </div>
       <div className="flex gap-3 flex-col flex-auto overflow-y-auto">
-        <span>{drill.description}</span>
+        {mode === "regular" && <span>{drill.description}</span>}
+        {mode === "edit" && <DrillForm drill={drill} onChange={handleUpdate} />}
         <Heading as="h2" size="4">
           Strings of Fire:
         </Heading>
@@ -91,7 +97,7 @@ export default function DrillDetails({ drill }: Props) {
       </div>
       <div className="flex-initial">
         {editId === "new" ? (
-          <Form
+          <StringForm
             onDone={() => setEditId(undefined)}
             drill={drill}
             onChange={handleChange}
