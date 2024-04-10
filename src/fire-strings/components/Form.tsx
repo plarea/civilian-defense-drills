@@ -1,5 +1,6 @@
-import { FormEvent, useState } from "react";
-import { TextField, Text, Button, TextArea } from "@radix-ui/themes";
+import { FocusEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { TextField, Text, TextArea, Card } from "@radix-ui/themes";
+import { useDebouncedCallback } from "use-debounce";
 import FireString, { FireStringForm } from "../models";
 import Drill from "../../drills/models";
 
@@ -14,54 +15,128 @@ type CreateProps = {
 };
 
 type Props = {
-  onSubmit: (form: FireString | FireStringForm) => void;
-  onCancel: () => void;
+  defaultOrder?: number;
+  onChange: (form: FireString | FireStringForm) => void;
+  onDone: () => void;
 } & (UpdateProps | CreateProps);
 
-export default function Form(props: Props) {
-  const [name, setName] = useState(props.fireString?.name ?? "");
-  const [description, setDescription] = useState(
-    props.fireString?.description ?? "",
+export default function Form({
+  onChange,
+  fireString,
+  drill,
+  onDone,
+  defaultOrder,
+}: Props) {
+  const [distance, setDistance] = useState(fireString?.distance ?? "");
+  const [description, setDescription] = useState(fireString?.description ?? "");
+  const [order, setOrder] = useState<number>(
+    defaultOrder || fireString?.order || 0,
   );
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (name.length <= 0 || description.length <= 0) {
+  const handleOrderChange = (orderChange?: string) => {
+    if (!orderChange) {
+      setOrder(0);
+      return;
+    }
+    if (orderChange === "") {
+      setOrder(0);
+      return;
+    }
+    const orderActual = Number(orderChange);
+    if (isNaN(orderActual)) {
+      setOrder(0);
+      return;
+    }
+    setOrder(orderActual);
+  };
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    // don't allow line breaks in the text area
+    // @ts-expect-error inputType does exist on nativeEvent
+    if (e.nativeEvent.inputType === "insertLineBreak") {
+      handleSubmit();
+      return;
+    }
+
+    setDescription(e.target.value);
+  };
+  const fireStringForm = useMemo(() => {
+    if (description.length <= 0) {
       // TODO show error
       return;
     }
-    const drillId = props.fireString ? props.fireString.drillId : props.drill.id;
-    const fireString = { ...(props.fireString || {}), name, drillId, description };
-    setName("");
-    setDescription("");
-    props.onSubmit(fireString);
+    const drillId = fireString ? fireString.drillId : drill.id;
+    return {
+      ...(fireString || {}),
+      distance,
+      drillId,
+      description,
+      order,
+    };
+  }, [fireString, drill, distance, description, order]);
+  const triggerChange = useDebouncedCallback(
+    (form?: FireString | FireStringForm) => {
+      if (!form) {
+        return;
+      }
+      onChange(form);
+    },
+    250,
+  );
+  useEffect(() => {
+    triggerChange(fireStringForm);
+  }, [fireStringForm, triggerChange]);
+
+  const handleSubmit = async (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (!fireStringForm) {
+      onDone();
+      return;
+    }
+    onChange(fireStringForm);
+    onDone();
   };
+
+  const handleBlur = (e: FocusEvent<HTMLFormElement>) => {
+    if (e.relatedTarget) {
+      return;
+    }
+
+    handleSubmit();
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <Text as="label">String name:</Text>
-      <TextField.Root
-        type="text"
-        id="string-name"
-        name="string-name"
-        value={name}
-        placeholder="1st COF"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Text as="label">String description:</Text>
-      <TextArea
-        id="string-description"
-        name="string-description"
-        value={description}
-        placeholder="2 shots center target, headbox"
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <div className="flex gap-3 ml-auto">
-        <Button onClick={props.onCancel} variant="soft">
-          Cancel
-        </Button>
-        <Button variant="outline" type="submit">
-          {props.fireString ? "Update" : "Create"}
-        </Button>
-      </div>
-    </form>
+    <Card variant="surface" className="flex flex-col gap-2 w-full">
+      <form onBlur={handleBlur} onSubmit={handleSubmit}>
+        <Text as="label">String description:</Text>
+        <TextArea
+          id="string-description"
+          name="string-description"
+          value={description}
+          placeholder="2 shots center target, headbox"
+          onChange={handleDescriptionChange}
+          autoFocus
+        />
+        <Text as="label">Distance</Text>
+        <TextField.Root
+          type="text"
+          id="string-distance"
+          name="string-distance"
+          value={distance}
+          placeholder="5m or 25m to 10m"
+          onChange={(e) => setDistance(e.target.value)}
+        />
+        <Text as="label">Order</Text>
+        <TextField.Root
+          type="number"
+          id="string-order"
+          name="string-order"
+          value={order}
+          placeholder="2"
+          onChange={(e) => handleOrderChange(e.target.value)}
+        />
+        <input type="submit" hidden />
+      </form>
+    </Card>
   );
 }

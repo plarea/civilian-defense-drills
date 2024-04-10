@@ -10,7 +10,7 @@ export class MySubClassedDexie extends Dexie {
     super('myDatabase');
     this.version(5).stores({
       drills: 'id, name',
-      fireStrings: `id, drillId, name, description`
+      fireStrings: `id, drillId, order`
     });
   }
 }

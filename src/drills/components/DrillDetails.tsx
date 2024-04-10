@@ -2,7 +2,10 @@ import { Heading, IconButton } from "@radix-ui/themes";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import Drill from "../models";
 import FireStringList from "../../fire-strings/components/List";
-import { upsertFireString, useQueryFireStrings } from "../../fire-strings/service";
+import {
+  upsertFireString,
+  useQueryFireStrings,
+} from "../../fire-strings/service";
 import Form from "../../fire-strings/components/Form";
 import { useState } from "react";
 import FireString, { FireStringForm } from "../../fire-strings/models";
@@ -13,16 +16,15 @@ type Props = {
 };
 export default function DrillDetails({ drill }: Props) {
   const fireStrings = useQueryFireStrings(drill.id);
+  const highestOrder = fireStrings
+    .map((fs) => fs.order)
+    .reduce((cur, acc) => Math.max(cur, acc), 0);
   const [editId, setEditId] = useState<string>();
   const handleEditClick = (id: string) => {
     setEditId(id);
   };
-  const handleCancel = () => {
-    setEditId(undefined);
-  };
-  const handleSubmit = async (fireString: FireString | FireStringForm) => {
+  const handleChange = async (fireString: FireString | FireStringForm) => {
     await upsertFireString(fireString);
-    setEditId(undefined);
   };
   return (
     <section className="flex flex-col gap-3 flex-auto">
@@ -39,31 +41,30 @@ export default function DrillDetails({ drill }: Props) {
       </Heading>
       {fireStrings.length > 0 && (
         <FireStringList
+          onDone={() => setEditId(undefined)}
           fireStrings={fireStrings}
           editId={editId}
-          onCancel={handleCancel}
-          onUpdate={handleSubmit}
+          onChange={handleChange}
           onEditClick={handleEditClick}
         />
       )}
       {editId === "new" && (
         <Form
+          onDone={() => setEditId(undefined)}
           drill={drill}
-          onCancel={() => setEditId(undefined)}
-          onSubmit={handleSubmit}
+          onChange={handleChange}
+          defaultOrder={highestOrder + 1}
         />
       )}
-      {!editId && (
-        <IconButton
-          className="w-full mt-auto"
-          onClick={() => setEditId("new")}
-          color="orange"
-          variant="soft"
-        >
-          <PlusCircledIcon width="18" height="18" />
-          &nbsp;Add String of Fire
-        </IconButton>
-      )}
+      <IconButton
+        className="w-full mt-auto"
+        onClick={() => setEditId("new")}
+        color="orange"
+        variant="soft"
+      >
+        <PlusCircledIcon width="18" height="18" />
+        &nbsp;Add String of Fire
+      </IconButton>
     </section>
   );
 }

@@ -5,16 +5,16 @@ import Form from "./Form";
 type Props = {
   fireStrings: FireString[];
   editId?: string;
-  onCancel: () => void;
   onEditClick: (id: string) => void;
-  onUpdate: (fireString: FireString | FireStringForm) => void;
+  onDone: () => void;
+  onChange: (fireString: FireString | FireStringForm) => void;
 };
 
 export default function FireStringList({
   fireStrings,
   editId,
-  onUpdate,
-  onCancel,
+  onChange,
+  onDone,
   onEditClick,
 }: Props) {
   return (
@@ -22,10 +22,9 @@ export default function FireStringList({
       {fireStrings.map((fireString) => (
         <li key={fireString.id}>
           {editId === fireString.id ? (
-            <Form fireString={fireString} onSubmit={onUpdate} onCancel={onCancel} />
+            <Form onDone={onDone} fireString={fireString} onChange={onChange} />
           ) : (
             <FireStringDetail
-              isEditable={!editId}
               fireString={fireString}
               onEditClick={() => onEditClick(fireString.id)}
             />

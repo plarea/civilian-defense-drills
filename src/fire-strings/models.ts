@@ -1,14 +1,16 @@
 type FireString = {
   id: string;
   drillId: string;
-  name: string;
+  order: number;
+  distance: string;
   description: string;
 };
 
 export default FireString;
 
 export type FireStringForm = {
-  name: string;
+  order: number;
+  distance: string;
   drillId: string;
   description: string;
 };
