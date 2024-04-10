@@ -8,7 +8,7 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super('myDatabase');
-    this.version(5).stores({
+    this.version(6).stores({
       drills: 'id, name',
       fireStrings: `id, drillId, order`
     });
