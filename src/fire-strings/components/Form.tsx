@@ -1,6 +1,5 @@
-import { FocusEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { FocusEvent, FormEvent, useMemo, useState } from "react";
 import { TextField, Text, TextArea, Card } from "@radix-ui/themes";
-import { useDebouncedCallback } from "use-debounce";
 import FireString, { FireStringForm } from "../models";
 import Drill from "../../drills/models";
 
@@ -74,18 +73,6 @@ export default function Form({
       order,
     };
   }, [fireString, drill, distance, description, order]);
-  const triggerChange = useDebouncedCallback(
-    (form?: FireString | FireStringForm) => {
-      if (!form) {
-        return;
-      }
-      onChange(form);
-    },
-    250,
-  );
-  useEffect(() => {
-    triggerChange(fireStringForm);
-  }, [fireStringForm, triggerChange]);
 
   const handleSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
