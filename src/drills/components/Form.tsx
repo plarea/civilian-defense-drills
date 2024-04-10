@@ -1,6 +1,6 @@
 import { useDebouncedCallback } from "use-debounce";
 import { FocusEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { TextField, Text, Flex, Button, TextArea } from "@radix-ui/themes";
+import { TextField, Flex, Button, TextArea } from "@radix-ui/themes";
 import Drill, { DrillForm } from "../models";
 
 type NewProps = {
@@ -85,8 +85,10 @@ export default function DrillsForm(props: Props) {
   return (
     <form onBlur={handleBlur} onSubmit={handleSubmit} className="flex flex-col">
       <Flex gap="3" direction="column">
-        {!props.drill && <Text as="label">Drill name:</Text>}
+        {!props.drill && <span>Name:</span>}
         <TextField.Root
+          size="3"
+          radius="full"
           type="text"
           id="drill-name"
           name="drill-name"
@@ -94,8 +96,10 @@ export default function DrillsForm(props: Props) {
           placeholder="50 round carbine"
           onChange={(e) => setName(e.target.value)}
         />
-        {!props.drill && <Text as="label">Drill description:</Text>}
+        {!props.drill && <span>Description:</span>}
         <TextArea
+          size="3"
+          radius="full"
           id="drill-description"
           name="drill-description"
           value={description}

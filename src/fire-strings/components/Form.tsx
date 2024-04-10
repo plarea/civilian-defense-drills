@@ -92,10 +92,16 @@ export default function Form({
   };
 
   return (
-    <Card variant="surface" className="flex flex-col gap-2 w-full">
-      <form onBlur={handleBlur} onSubmit={handleSubmit}>
+    <Card variant="surface">
+      <form
+        onBlur={handleBlur}
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-1 w-full"
+      >
         <Text as="label">String description:</Text>
         <TextArea
+          size="3"
+          radius="full"
           id="string-description"
           name="string-description"
           value={description}
@@ -105,6 +111,8 @@ export default function Form({
         />
         <Text as="label">Distance</Text>
         <TextField.Root
+          size="3"
+          radius="full"
           type="text"
           id="string-distance"
           name="string-distance"
@@ -114,6 +122,8 @@ export default function Form({
         />
         <Text as="label">Order</Text>
         <TextField.Root
+          size="3"
+          radius="full"
           type="number"
           id="string-order"
           name="string-order"

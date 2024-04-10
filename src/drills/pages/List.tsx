@@ -1,5 +1,5 @@
 import { useQueryDrills } from "../service";
-import { Button, Heading, Text } from "@radix-ui/themes";
+import { Button, Heading } from "@radix-ui/themes";
 import DrillCard from "../components/DrillCard";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function DrillsList() {
       <Heading>Drills</Heading>
       <section className="flex flex-col gap-3 flex-auto">
         <ul className="flex flex-col gap-3">
-          {!drills.length && <Text>No saved drills. Lets create one!</Text>}
+          {!drills.length && <span>No saved drills. Lets create one!</span>}
           {drills.map((drill) => (
             <li className="flex justify-between flex-row gap-3" key={drill.id}>
               <DrillCard drill={drill} />
