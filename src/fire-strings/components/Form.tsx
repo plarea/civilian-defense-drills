@@ -118,7 +118,7 @@ export default function Form({
           type="number"
           id="string-order"
           name="string-order"
-          value={order}
+          value={order === 0 ? "" : order}
           placeholder="2"
           onChange={(e) => handleOrderChange(e.target.value)}
         />
