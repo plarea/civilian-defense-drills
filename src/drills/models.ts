@@ -1,10 +1,8 @@
-type Drill = {
+export type Drill = {
   id: string;
   name: string;
   description: string;
 };
-
-export default Drill;
 
 export type DrillForm = {
   name: string;

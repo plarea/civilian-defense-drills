@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import Drill, { DrillForm, isDrill } from "./models";
+import { Drill, DrillForm, isDrill } from "./models";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
 

@@ -1,6 +1,6 @@
-import { Heading, IconButton, Link as RadixLink } from "@radix-ui/themes";
+import { IconButton, Link as RadixLink } from "@radix-ui/themes";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
-import Drill from "../models";
+import { Drill } from "../models";
 import FireStringList from "../../fire-strings/components/List";
 import {
   deleteFireStrings,
@@ -10,7 +10,7 @@ import {
 import DrillForm from "./Form";
 import StringForm from "../../fire-strings/components/Form";
 import { useState } from "react";
-import FireString, { FireStringForm } from "../../fire-strings/models";
+import { FireString, FireStringForm } from "../../fire-strings/models";
 import Link from "../../components/Link";
 import { upsertDrill } from "../service";
 

@@ -1,5 +1,5 @@
 import Dexie, { Table } from "dexie";
-import Drill from "./drills/models";
+import { Drill } from "./drills/models";
 import { FireString } from "./fire-strings/models";
 
 export class MySubClassedDexie extends Dexie {

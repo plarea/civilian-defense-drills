@@ -1,7 +1,7 @@
 import { useDebouncedCallback } from "use-debounce";
 import { FocusEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { TextField, Flex, Button, TextArea } from "@radix-ui/themes";
-import Drill, { DrillForm } from "../models";
+import { Drill, DrillForm } from "../models";
 
 type NewProps = {
   drill?: undefined;

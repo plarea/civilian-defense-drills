@@ -1,5 +1,5 @@
 import { Card } from "@radix-ui/themes";
-import Drill from "../models";
+import { Drill } from "../models";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
