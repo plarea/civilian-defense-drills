@@ -1,4 +1,11 @@
-import { FocusEvent, FormEvent, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FocusEvent,
+  FormEvent,
+  SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 import { TextField, Text, TextArea, Card } from "@radix-ui/themes";
 import FireString, { FireStringForm } from "../models";
 import Drill from "../../drills/models";
@@ -31,21 +38,25 @@ export default function Form({
   const [order, setOrder] = useState<number>(
     defaultOrder || fireString?.order || 0,
   );
-  const handleOrderChange = (orderChange?: string) => {
-    if (!orderChange) {
-      setOrder(0);
+  const [shots, setShots] = useState<number>(fireString?.shots || 0);
+  const handleNumberChange = (
+    change: string | undefined,
+    setter: Dispatch<SetStateAction<number>>,
+  ) => {
+    if (!change) {
+      setter(0);
       return;
     }
-    if (orderChange === "") {
-      setOrder(0);
+    if (change === "") {
+      setter(0);
       return;
     }
-    const orderActual = Number(orderChange);
-    if (isNaN(orderActual)) {
-      setOrder(0);
+    const changeActual = Number(change);
+    if (isNaN(changeActual)) {
+      setter(0);
       return;
     }
-    setOrder(orderActual);
+    setter(changeActual);
   };
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -70,8 +81,9 @@ export default function Form({
       drillId,
       description,
       order,
+      shots,
     };
-  }, [fireString, drill, distance, description, order]);
+  }, [fireString, drill, distance, description, order, shots]);
 
   const handleSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
@@ -117,8 +129,19 @@ export default function Form({
           id="string-distance"
           name="string-distance"
           value={distance}
-          placeholder="5m or 25m to 10m"
+          placeholder="5m or 25m > 10m"
           onChange={(e) => setDistance(e.target.value)}
+        />
+        <Text as="label">Shots</Text>
+        <TextField.Root
+          size="3"
+          radius="full"
+          type="number"
+          id="string-shots"
+          name="string-shots"
+          value={shots === 0 ? "" : shots}
+          placeholder="3"
+          onChange={(e) => handleNumberChange(e.target.value, setShots)}
         />
         <Text as="label">Order</Text>
         <TextField.Root
@@ -129,7 +152,7 @@ export default function Form({
           name="string-order"
           value={order === 0 ? "" : order}
           placeholder="2"
-          onChange={(e) => handleOrderChange(e.target.value)}
+          onChange={(e) => handleNumberChange(e.target.value, setOrder)}
         />
         <input type="submit" hidden />
       </form>

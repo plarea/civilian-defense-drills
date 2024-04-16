@@ -22,9 +22,20 @@ export default function FireStringDetail({
       </span>
       <div className="flex-auto flex flex-col gap-1">
         <span className="text-sm">{fireString.description}</span>
-        {fireString.distance.length > 0 && (
-          <span className="text-xs">Distance: {fireString.distance}</span>
-        )}
+        <div className="flex">
+          <div className="flex-auto">
+            {fireString.distance.length > 0 && (
+              <span className="text-xs">Distance: {fireString.distance}</span>
+            )}
+          </div>
+          <div className="flex-initial">
+            {fireString.shots > 0 && (
+              <span className="text-xs">
+                {fireString.shots} Shot{fireString.shots > 1 ? "s" : ""} 
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </Card>
   );

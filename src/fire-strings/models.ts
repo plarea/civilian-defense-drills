@@ -4,16 +4,12 @@ type FireString = {
   order: number;
   distance: string;
   description: string;
+  shots: number;
 };
 
 export default FireString;
 
-export type FireStringForm = {
-  order: number;
-  distance: string;
-  drillId: string;
-  description: string;
-};
+export type FireStringForm = Omit<FireString, "id">;
 
 export function isFireString(
   string: FireString | FireStringForm,
