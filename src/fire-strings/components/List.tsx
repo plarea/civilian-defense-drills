@@ -1,4 +1,4 @@
-import FireString, { FireStringForm } from "../models";
+import { FireString, FireStringForm } from "../models";
 import FireStringDetail from "./Detail";
 import Form from "./Form";
 

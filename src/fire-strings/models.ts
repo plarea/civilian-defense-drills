@@ -1,4 +1,4 @@
-type FireString = {
+export type FireString = {
   id: string;
   drillId: string;
   order: number;
@@ -6,8 +6,6 @@ type FireString = {
   description: string;
   shots: number;
 };
-
-export default FireString;
 
 export type FireStringForm = Omit<FireString, "id">;
 

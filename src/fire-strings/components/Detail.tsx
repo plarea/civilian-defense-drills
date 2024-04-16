@@ -1,5 +1,5 @@
 import { Card, Checkbox } from "@radix-ui/themes";
-import FireString from "../models";
+import { FireString } from "../models";
 
 type Props = {
   fireString: FireString;
@@ -31,7 +31,7 @@ export default function FireStringDetail({
           <div className="flex-initial">
             {fireString.shots > 0 && (
               <span className="text-xs">
-                {fireString.shots} Shot{fireString.shots > 1 ? "s" : ""} 
+                {fireString.shots} Shot{fireString.shots > 1 ? "s" : ""}
               </span>
             )}
           </div>

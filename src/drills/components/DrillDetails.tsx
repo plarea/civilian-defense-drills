@@ -84,7 +84,10 @@ export default function DrillDetails({ drill }: Props) {
         {mode === "regular" && <span>{drill.description}</span>}
         {mode === "edit" && <DrillForm drill={drill} onChange={handleUpdate} />}
         <div className="flex">
-          <h2 className="text-lg font-bold flex-auto">Strings of Fire:</h2>
+          <h2 className="text-lg font-bold flex-auto">Targets</h2>
+        </div>
+        <div className="flex">
+          <h2 className="text-lg font-bold flex-auto">Strings of Fire</h2>
           <span className="flex text-sm flex-initial items-center">
             {totalShots} shots
           </span>

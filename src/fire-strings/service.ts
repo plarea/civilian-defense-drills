@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import FireString, { FireStringForm, isFireString } from "./models";
+import { FireString, FireStringForm, isFireString } from "./models";
 import { db } from "../db";
 import { useLiveQuery } from "dexie-react-hooks";
 
@@ -18,6 +18,7 @@ export function createFireString(form: FireStringForm): FireString {
     order: form.order,
     description: form.description,
     distance: form.distance,
+    shots: form.shots,
   };
 }
 
@@ -33,6 +34,8 @@ export async function upsertFireString(
   return;
 }
 
-export async function deleteFireStrings(fireStringIds: string[]): Promise<void> {
+export async function deleteFireStrings(
+  fireStringIds: string[],
+): Promise<void> {
   await db.fireStrings.bulkDelete(fireStringIds);
 }
