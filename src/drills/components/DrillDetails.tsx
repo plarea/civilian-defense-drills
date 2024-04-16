@@ -25,6 +25,9 @@ export default function DrillDetails({ drill }: Props) {
   const highestOrder = fireStrings
     .map((fs) => fs.order)
     .reduce((cur, acc) => Math.max(cur, acc), 0);
+  const totalShots = fireStrings
+    .map((fs) => fs.shots)
+    .reduce((acc, cur) => acc + cur, 0);
   const [editId, setEditId] = useState<string>();
   const [deleteIds, setDeleteIds] = useState<string[]>([]);
   const [mode, setMode] = useState<Mode>("regular");
@@ -75,14 +78,17 @@ export default function DrillDetails({ drill }: Props) {
             </>
           )}
         </div>
-        <Heading>{drill.name}</Heading>
+        <h1 className="text-xl font-bold">{drill.name}</h1>
       </div>
       <div className="flex gap-3 flex-col flex-auto overflow-y-auto">
         {mode === "regular" && <span>{drill.description}</span>}
         {mode === "edit" && <DrillForm drill={drill} onChange={handleUpdate} />}
-        <Heading as="h2" size="4">
-          Strings of Fire:
-        </Heading>
+        <div className="flex">
+          <h2 className="text-lg font-bold flex-auto">Strings of Fire:</h2>
+          <span className="flex text-sm flex-initial items-center">
+            {totalShots} shots
+          </span>
+        </div>
         {fireStrings.length > 0 && (
           <FireStringList
             mode={mode === "regular" ? "view" : "select"}
