@@ -83,8 +83,12 @@ export default function DrillsForm(props: Props) {
     handleSubmit();
   };
   return (
-    <form onBlur={handleBlur} onSubmit={handleSubmit} className="flex flex-col">
-      <Flex gap="3" direction="column">
+    <form
+      onBlur={handleBlur}
+      onSubmit={handleSubmit}
+      className="flex flex-col flex-auto"
+    >
+      <Flex gap="3" direction="column" className="flex flex-auto">
         {!props.drill && <span>Name:</span>}
         <TextField.Root
           size="3"
@@ -108,12 +112,12 @@ export default function DrillsForm(props: Props) {
           onChange={handleDescriptionChange}
         />
         {!props.drill && (
-          <div className="flex gap-3 ml-auto">
-            <Button onClick={props.onCancel} variant="soft">
-              Cancel
-            </Button>
-            <Button variant="outline" type="submit">
+          <div className="grid gap-3">
+            <Button size="3" variant="outline" type="submit">
               {props.drill ? "Update" : "Create"}
+            </Button>
+            <Button size="3" onClick={props.onCancel} variant="soft">
+              Cancel
             </Button>
           </div>
         )}

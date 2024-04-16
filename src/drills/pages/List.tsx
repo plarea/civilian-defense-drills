@@ -22,7 +22,7 @@ export default function DrillsList() {
             </li>
           ))}
         </ul>
-        <Button onClick={handleCreateDrill} className="mt-auto">
+        <Button size="3" onClick={handleCreateDrill} className="mt-auto">
           Create Drill
         </Button>
       </section>
