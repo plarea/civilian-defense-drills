@@ -105,13 +105,13 @@ export default function DrillDetails({ drill }: Props) {
           />
         ) : (
           <IconButton
-            className="w-full mt-auto"
+            size="3"
+            className="w-full mt-auto gap-2"
             onClick={() => setEditId("new")}
             color="orange"
             variant="soft"
           >
-            <PlusCircledIcon width="18" height="18" />
-            &nbsp;Add String of Fire
+            <PlusCircledIcon width="24" height="24" /> Add String of Fire
           </IconButton>
         )}
       </div>
