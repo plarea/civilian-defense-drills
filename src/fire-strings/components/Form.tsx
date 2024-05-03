@@ -8,7 +8,7 @@ import {
 } from "react";
 import { TextField, Text, TextArea, Card } from "@radix-ui/themes";
 import { FireString, FireStringForm } from "../models";
-import Drill from "../../drills/models";
+import { Drill } from "../../drills/models";
 
 type UpdateProps = {
   drill?: undefined;

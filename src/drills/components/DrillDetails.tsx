@@ -1,4 +1,4 @@
-import { IconButton, Link as RadixLink } from "@radix-ui/themes";
+import { Card, IconButton, Link as RadixLink } from "@radix-ui/themes";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Drill } from "../models";
 import FireStringList from "../../fire-strings/components/List";
@@ -13,6 +13,7 @@ import { useState } from "react";
 import { FireString, FireStringForm } from "../../fire-strings/models";
 import Link from "../../components/Link";
 import { upsertDrill } from "../service";
+import TargetList from "../../targets/components/List";
 
 type Props = {
   drill: Drill;
@@ -28,12 +29,12 @@ export default function DrillDetails({ drill }: Props) {
   const totalShots = fireStrings
     .map((fs) => fs.shots)
     .reduce((acc, cur) => acc + cur, 0);
-  const [editId, setEditId] = useState<string>();
-  const [deleteIds, setDeleteIds] = useState<string[]>([]);
+  const [fireStringEditId, setFireStringEditId] = useState<string>();
+  const [fireStringDeleteIds, setFireStringDeleteIds] = useState<string[]>([]);
   const [mode, setMode] = useState<Mode>("regular");
   const handleEditClick = (id: string) => {
     if (mode === "edit") {
-      setDeleteIds((cur) => {
+      setFireStringDeleteIds((cur) => {
         if (cur.includes(id)) {
           return cur.filter((dId) => dId !== id);
         }
@@ -41,7 +42,7 @@ export default function DrillDetails({ drill }: Props) {
       });
       return;
     }
-    setEditId(id);
+    setFireStringEditId(id);
   };
   const handleChange = async (fireString: FireString | FireStringForm) => {
     await upsertFireString(fireString);
@@ -51,14 +52,14 @@ export default function DrillDetails({ drill }: Props) {
   };
   const handleDone = () => {
     setMode("regular");
-    setDeleteIds([]);
+    setFireStringDeleteIds([]);
   };
   const handleDelete = () => {
-    if (!deleteIds.length) {
+    if (!fireStringDeleteIds.length) {
       handleDone();
       return;
     }
-    deleteFireStrings(deleteIds);
+    deleteFireStrings(fireStringDeleteIds);
     handleDone();
   };
   return (
@@ -86,6 +87,7 @@ export default function DrillDetails({ drill }: Props) {
         <div className="flex">
           <h2 className="text-lg font-bold flex-auto">Targets</h2>
         </div>
+        <TargetList drill={drill} />
         <div className="flex">
           <h2 className="text-lg font-bold flex-auto">Strings of Fire</h2>
           <span className="flex text-sm flex-initial items-center">
@@ -95,19 +97,19 @@ export default function DrillDetails({ drill }: Props) {
         {fireStrings.length > 0 && (
           <FireStringList
             mode={mode === "regular" ? "view" : "select"}
-            onDone={() => setEditId(undefined)}
+            onDone={() => setFireStringEditId(undefined)}
             fireStrings={fireStrings}
-            editId={editId}
+            editId={fireStringEditId}
             onChange={handleChange}
             onClick={handleEditClick}
-            selectedIds={deleteIds}
+            selectedIds={fireStringDeleteIds}
           />
         )}
       </div>
       <div className="flex-initial">
-        {editId === "new" ? (
+        {fireStringEditId === "new" ? (
           <StringForm
-            onDone={() => setEditId(undefined)}
+            onDone={() => setFireStringEditId(undefined)}
             drill={drill}
             onChange={handleChange}
             defaultOrder={highestOrder + 1}
@@ -116,7 +118,7 @@ export default function DrillDetails({ drill }: Props) {
           <IconButton
             size="3"
             className="w-full mt-auto gap-2"
-            onClick={() => setEditId("new")}
+            onClick={() => setFireStringEditId("new")}
             color="orange"
             variant="soft"
           >
