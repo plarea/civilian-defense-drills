@@ -1,4 +1,4 @@
-import { Card, IconButton, Link as RadixLink } from "@radix-ui/themes";
+import { IconButton, Link as RadixLink } from "@radix-ui/themes";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Drill } from "../models";
 import FireStringList from "../../fire-strings/components/List";
