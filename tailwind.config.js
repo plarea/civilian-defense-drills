@@ -1,4 +1,4 @@
-import { extendedTheme } from './src/theme'
+import { extendedTheme } from "./src/theme";
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],

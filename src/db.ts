@@ -13,7 +13,7 @@ export class MySubClassedDexie extends Dexie {
     this.version(7).stores({
       drills: "id, name",
       fireStrings: `id, drillId, order`,
-      targets: 'id, drillId'
+      targets: "id, drillId",
     });
   }
 }

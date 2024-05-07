@@ -6,7 +6,7 @@ const historyRoutes: RouteObject = {
     {
       index: true,
       lazy: async () => {
-        const { HistoryList } = await import('./');
+        const { HistoryList } = await import("./");
         return { Component: HistoryList };
       },
     },
