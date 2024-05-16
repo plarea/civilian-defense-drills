@@ -119,7 +119,6 @@ export default function DrillDetails({ drill }: Props) {
             size="3"
             className="w-full mt-auto gap-2"
             onClick={() => setFireStringEditId("new")}
-            color="orange"
             variant="soft"
           >
             <PlusCircledIcon width="24" height="24" /> Add String of Fire
